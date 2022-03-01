@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yt_plateforme_rapide", "yt_plateforme_rapide.csproj", "{1C84A667-3366-4E0C-9A76-6AD81EE89911}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C84A667-3366-4E0C-9A76-6AD81EE89911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C84A667-3366-4E0C-9A76-6AD81EE89911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C84A667-3366-4E0C-9A76-6AD81EE89911}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{1C84A667-3366-4E0C-9A76-6AD81EE89911}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{1C84A667-3366-4E0C-9A76-6AD81EE89911}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{1C84A667-3366-4E0C-9A76-6AD81EE89911}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal
