@@ -1,0 +1,7 @@
+Branche test_ennemi
+Ajout des contrôles A et D
+Conversion d'une branche en scène
+Repositionnement du joueur
+Dupliquer la scène Player pour Enemy
+Retirer la caméra de l'enemy
+
