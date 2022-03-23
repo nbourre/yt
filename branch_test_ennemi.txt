@@ -1,7 +1,7 @@
-Branche test_ennemi
-Ajout des contrôles A et D
-Conversion d'une branche en scène
-Repositionnement du joueur
-Dupliquer la scène Player pour Enemy
-Retirer la caméra de l'enemy
+Branche test_ennemi <-- Doit renommer pour test_attack
 
+Ajout des contrôles A et D
+Conversion de Player en scène
+Repositionnement du joueur
+
+Utilisation de l'AnimationPlayer et l'AnimationTree
