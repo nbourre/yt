@@ -7,6 +7,10 @@ const JUMP_FORCE = 550
 const SPEED = 300
 const ACCEL = 0.4
 
+const ATTACK_1 = "attack_1"
+const ATTACK_2 = "attack_2"
+const ATTACK_3 = "attack_3"
+
 onready var sprite = $AnimatedSprite
 
 var velocity = Vector2.ZERO
@@ -53,18 +57,29 @@ func _unhandled_input(event):
 			$AnimationTree.set("parameters/in_air/current", 1)
 			pass
 
-		if event.is_action_pressed("attack_a"):
+		if event.is_action_pressed(ATTACK_1):
 			isAttacking  = true
 			$AnimationTree.set("parameters/attack_state/current", 0)
+			pass
+
+		if event.is_action_pressed(ATTACK_2):
+			isAttacking  = true
+			$AnimationTree.set("parameters/attack_state/current", 1)
+			pass
+
+		if event.is_action_pressed(ATTACK_3):
+			isAttacking  = true
+			$AnimationTree.set("parameters/attack_state/current", 2)
 			pass
 	
 
 func _on_AnimationPlayer_animation_finished(anim_name:String):
 	print("animation finished: " + anim_name)
-	if (anim_name == "attack_1"):
+	if (anim_name == ATTACK_1 or anim_name == ATTACK_2 or anim_name == ATTACK_3):
 		isAttacking = false
 		$AnimationTree.set("parameters/movement/current", 0)
 		pass
+	
 
 func testPrint():
 	print("test")
