@@ -238,7 +238,7 @@ states/Run/position = Vector2( 507, 54 )
 transitions = [ "Idle", "Attack_1", SubResource( 49 ), "Attack_1", "Idle", SubResource( 50 ), "Idle", "Run", SubResource( 51 ), "Run", "Idle", SubResource( 52 ), "Idle", "Attack_2", SubResource( 53 ), "Attack_2", "Idle", SubResource( 54 ), "Idle", "Attack_3", SubResource( 55 ), "Attack_3", "Idle", SubResource( 56 ), "Idle", "Jump", SubResource( 57 ), "Jump", "Fall", SubResource( 58 ), "Fall", "Idle", SubResource( 59 ), "Idle", "Falling", SubResource( 60 ), "Falling", "Idle", SubResource( 61 ), "Idle", "Dead", SubResource( 62 ) ]
 start_node = "Idle"
 end_node = "Dead"
-graph_offset = Vector2( 0, 52.736 )
+graph_offset = Vector2( 0, -29.9254 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
@@ -265,6 +265,7 @@ anims/RESET = SubResource( 38 )
 anims/Run = SubResource( 39 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 2, 8 )
 shape = SubResource( 30 )
 
