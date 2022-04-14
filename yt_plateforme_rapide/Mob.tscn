@@ -1,6 +1,7 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://assets/enemy.png" type="Texture" id=1]
+[ext_resource path="res://Mob.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=65]
 resource_name = "Attack"
@@ -188,6 +189,7 @@ graph_offset = Vector2( 0, -29.9254 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
 [node name="Mob" type="KinematicBody2D"]
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -196,7 +198,7 @@ __meta__ = {
 texture = ExtResource( 1 )
 hframes = 8
 vframes = 8
-frame = 6
+frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
