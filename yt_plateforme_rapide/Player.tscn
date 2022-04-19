@@ -3,7 +3,6 @@
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/viking2.png" type="Texture" id=2]
 
-
 [sub_resource type="Animation" id=31]
 resource_name = "Attack_1"
 length = 0.6
