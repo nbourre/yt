@@ -1,56 +1,60 @@
 extends KinematicBody2D
 
-
 enum {WALKING, IDLE}
+
+const MAX_VELOCITY = 50
+const MAX_FALL_VELOCITY = 500
+const GRAVITY = 100
+
+var current_state = WALKING
+
+var acceleration = .5
+
+var velocity = Vector2(0, 0)
+var direction = 1
+var direction_flip = false
+
 var state_machine
 
-const MAX_VELOCITY = 100
-var velocity = Vector2()
-var direction = -1
-
-onready var sprite = $Sprite
+var msg_acc = 0
+var msg_rate = .50
 
 func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
-	pass
-
+	state_machine.travel("Walk")
+	
 func _physics_process(delta):
-	move_character()
-	detect_turn_around()
+	msg_acc += delta
 
-func move_character():
-	velocity.y += 20
+	move_character(delta)
+	detect_direction_change()
 
-	if direction == -1:
-		velocity.x -= 10
-	else:
-		velocity.x += 10
-	
-	if abs(velocity.x) > MAX_VELOCITY:
-		velocity.x = MAX_VELOCITY * direction
-	
+func move_character(delta):
+
+	if direction_flip:
+		direction_flip = false
+		scale.x *= -1
+		debug("velocity: " + str(velocity))
+
+	if (not is_on_floor()):
+		velocity.y += GRAVITY
+		if velocity.y > MAX_FALL_VELOCITY:
+			velocity.y = MAX_FALL_VELOCITY
+
+	velocity.x = MAX_VELOCITY * direction
+	if velocity.x > MAX_VELOCITY:
+		velocity.x = MAX_VELOCITY
+	elif velocity.x < -MAX_VELOCITY:
+		velocity.x = -MAX_VELOCITY
+
 	velocity = move_and_slide(velocity, Vector2.UP)
 
-	# Display
-	if (velocity.x != 0):
-		state_machine.travel("Walk")
-	else:
-		state_machine.travel("Idle")
-
-	if direction != 0:
-		scale.x = direction
-		debug ("scale.x: " + str(scale.x))
-
-
-func detect_turn_around():
-
-	if is_on_floor():
-		if not $FloorDetector.is_colliding() :
-			direction *= -1
-			debug ("Direction : " + str(direction))
-		# elif $WallDetector.is_colliding() :
-		# 	direction *= -1
-		# 	debug ("Time to turn around : Wall")
-
+func detect_direction_change():
+    if is_on_floor():
+        if $WallDetector.is_colliding() or not $FloorDetector.is_colliding():
+            direction *= -1
+            direction_flip = true
+            debug("direction: " + str(direction))
+    
 func debug(msg):
-	print ("[" + str(OS.get_ticks_msec()) + "] : " + msg)
+	print("[" + str(OS.get_ticks_msec()) + "] : " + msg)

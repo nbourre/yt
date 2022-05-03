@@ -243,6 +243,7 @@ graph_offset = Vector2( 0, -29.9254 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
 [node name="Player" type="KinematicBody2D"]
+collision_mask = 6
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
@@ -271,6 +272,7 @@ shape = SubResource( 30 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+zoom = Vector2( 0.75, 0.75 )
 smoothing_enabled = true
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
