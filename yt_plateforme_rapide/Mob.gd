@@ -19,6 +19,11 @@ var state_machine
 var msg_acc = 0
 var msg_rate = .50
 
+var think_acc = 0
+var think_rate = .50
+
+var other_body
+
 func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
 	#state_machine.start("Walk")
@@ -28,12 +33,23 @@ func _ready():
 func _physics_process(delta):
 	msg_acc += delta
 
-	move_character(delta)
-	detect_direction_change()
+	match (current_state):
+		WALKING:
+			move_character(delta)
+			detect_direction_change()
+		IDLE:
+			think(delta)
+		ATTACK:
+			attack(delta)
 
+func think(delta):
+	think_acc += delta
 
-func stop(delta):
 	state_machine.travel("Idle")
+
+	if (think_acc >= think_rate):
+		think_acc = 0
+		current_state = ATTACK
 
 func attack(delta):
 	state_machine.travel("Attack")
@@ -72,5 +88,6 @@ func debug(msg):
 func _on_PlayerDetector_body_entered(body:Node):
 	if body.get_name() == "Player":
 		current_state = IDLE
+		other_body = body as KinematicBody2D
 		debug(body.get_name())
 	pass # Replace with function body.

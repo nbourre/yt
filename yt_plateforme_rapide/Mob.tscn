@@ -167,7 +167,6 @@ auto_advance = true
 [sub_resource type="AnimationNodeStateMachineTransition" id=85]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=86]
-switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id=63]
 states/Attack/node = SubResource( 70 )
@@ -185,7 +184,7 @@ states/Walk/position = Vector2( 507, 54 )
 transitions = [ "Idle", "Death", SubResource( 75 ), "Idle", "Attack", SubResource( 78 ), "Attack", "Idle", SubResource( 79 ), "Idle", "Cast", SubResource( 80 ), "Cast", "Idle", SubResource( 81 ), "Idle", "Stomp", SubResource( 82 ), "Stomp", "Idle", SubResource( 83 ), "Idle", "Walk", SubResource( 85 ), "Walk", "Idle", SubResource( 86 ) ]
 start_node = "Idle"
 end_node = "Death"
-graph_offset = Vector2( 0, -29.9254 )
+graph_offset = Vector2( 0, 62.2506 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
@@ -237,7 +236,6 @@ cast_to = Vector2( 0, 5 )
 collision_mask = 4
 
 [node name="PlayerDetector" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
