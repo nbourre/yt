@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum {WALKING, IDLE}
+enum {WALKING, IDLE, ATTACK}
 
 const MAX_VELOCITY = 50
 const MAX_FALL_VELOCITY = 500
@@ -21,13 +21,22 @@ var msg_rate = .50
 
 func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
+	#state_machine.start("Walk")
 	state_machine.travel("Walk")
+	
 	
 func _physics_process(delta):
 	msg_acc += delta
 
 	move_character(delta)
 	detect_direction_change()
+
+
+func stop(delta):
+	state_machine.travel("Idle")
+
+func attack(delta):
+	state_machine.travel("Attack")
 
 func move_character(delta):
 
@@ -49,6 +58,7 @@ func move_character(delta):
 
 	velocity = move_and_slide(velocity, Vector2.UP)
 
+
 func detect_direction_change():
     if is_on_floor():
         if $WallDetector.is_colliding() or not $FloorDetector.is_colliding():
@@ -58,3 +68,9 @@ func detect_direction_change():
     
 func debug(msg):
 	print("[" + str(OS.get_ticks_msec()) + "] : " + msg)
+
+func _on_PlayerDetector_body_entered(body:Node):
+	if body.get_name() == "Player":
+		current_state = IDLE
+		debug(body.get_name())
+	pass # Replace with function body.
