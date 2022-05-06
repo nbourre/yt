@@ -25,6 +25,7 @@ var think_rate = .50
 var other_body
 
 func _ready():
+	
 	state_machine = $AnimationTree.get("parameters/playback")
 	#state_machine.start("Walk")
 	state_machine.travel("Walk")
@@ -90,4 +91,13 @@ func _on_PlayerDetector_body_entered(body:Node):
 		current_state = IDLE
 		other_body = body as KinematicBody2D
 		debug(body.get_name())
+	pass # Replace with function body.
+
+
+func attack_done():
+	current_state = WALKING
+	debug("attack done")
+
+func _on_AnimationPlayer_animation_finished(anim_name:String):
+	debug ("animation finished: " + anim_name)
 	pass # Replace with function body.

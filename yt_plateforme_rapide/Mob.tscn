@@ -189,7 +189,7 @@ graph_offset = Vector2( 0, 62.2506 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
 [sub_resource type="RectangleShape2D" id=84]
-extents = Vector2( 59.5, 10 )
+extents = Vector2( 41, 10 )
 
 [node name="Mob" type="KinematicBody2D"]
 collision_layer = 2
@@ -239,7 +239,8 @@ collision_mask = 4
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
-position = Vector2( 59.5, 6 )
+position = Vector2( 41, 6 )
 shape = SubResource( 84 )
 
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="PlayerDetector" to="." method="_on_PlayerDetector_body_entered"]
