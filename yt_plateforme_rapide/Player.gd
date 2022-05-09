@@ -5,6 +5,10 @@ const JUMP_FORCE = 550
 const SPEED = 300
 const ACCEL = 0.4
 
+enum { RUNNING, IDLE, ATTACKING, SUICIDE, DEAD, JUMPING }
+
+var current_state = IDLE
+
 onready var sprite = $Sprite
 var state_machine
 var is_dead = false
@@ -20,53 +24,110 @@ export var knockup = -750
 
 func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
+	state_machine.travel("Idle")
 
-func _physics_process(_delta):
-	if is_dead:
-		return
-
-	dir = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	if dir != 0:
-		sprite.scale.x = dir
-		facing_right = dir
+func _physics_process(delta):
 	
-	if is_on_floor():
-		if dir != 0:
-			state_machine.travel("Run")
-		else:
-			state_machine.travel("Idle")
-		
-		if Input.is_action_just_pressed("Jump"):
-			velocity.y = -JUMP_FORCE
-			state_machine.travel("Jump")
-		
-		if Input.is_action_pressed("Attack_1"):
-			state_machine.travel("Attack_1")
-			set_attack_monitoring()
+	match (current_state):
+		DEAD:
 			return
-		
-		if Input.is_action_pressed("Attack_2"):
-			state_machine.travel("Attack_2")
-			set_attack_monitoring()
-			return
-			
-		if Input.is_action_pressed("Attack_3"):
-			state_machine.travel("Attack_3")
-			return
-
-		if Input.is_action_just_pressed("Suicide"):
-			state_machine.travel("Dead")
-			is_dead = true
-			return
-	else:
-		if velocity.y > 0:
-			state_machine.travel("Falling")
-		
+		IDLE:
+			idle(delta)
+		RUNNING:
+			running(delta)
+		ATTACKING:
+			attacking(delta)
+		SUICIDE:
+			harakiri(delta)
+		JUMPING:
+			jumping(delta)
+	
 	
 	velocity.y += GRAVITY
 	velocity.x = lerp(velocity.x, SPEED * dir, ACCEL)
-	velocity = move_and_slide(velocity, Vector2.UP);
+	velocity = move_and_slide(velocity, Vector2.UP)
 
+func attack(delta:float, attack_name:String):
+	is_attacking = true
+	state_machine.travel(attack_name)
+	current_state = ATTACKING
+	set_attack_monitoring()
+	
+func attacking(delta:float):
+	dir = Input.get_action_strength("right") - Input.get_action_strength("left")
+	
+	if dir != 0:
+		sprite.scale.x = dir
+		facing_right = dir
+		if (not is_attacking):
+			state_machine.travel("Run")
+			current_state = RUNNING
+	else :
+		if (not is_attacking):
+			state_machine.travel("Idle")
+			current_state = IDLE
+
+func idle(delta:float):
+	dir = Input.get_action_strength("right") - Input.get_action_strength("left")
+	
+	if dir != 0:
+		sprite.scale.x = dir
+		facing_right = dir
+		state_machine.travel("Run")
+		current_state = RUNNING
+	
+	check_inputs(delta)
+
+func check_inputs(delta:float):
+	if Input.is_action_pressed("Attack_1") :
+		attack(delta, "Attack_1")
+		return
+	
+	if Input.is_action_pressed("Attack_2"):
+		attack(delta, "Attack_2")
+		return
+		
+	if Input.is_action_pressed("Attack_3"):
+		attack(delta, "Attack_3")
+		return
+		
+	if Input.is_action_just_pressed("Suicide"):
+		harakiri(delta)
+		return
+		
+	if Input.is_action_just_pressed("Jump"):
+		jump(delta)
+		return
+		
+func running(delta:float):
+	dir = Input.get_action_strength("right") - Input.get_action_strength("left")
+	if dir != 0:
+		sprite.scale.x = dir
+		facing_right = dir
+	else:
+		state_machine.travel("Idle")
+		current_state = IDLE
+		
+	check_inputs(delta)
+	
+
+func jump(delta:float):
+	velocity.y = -JUMP_FORCE
+	state_machine.travel("Jump")
+	current_state = JUMPING
+	
+func jumping(delta:float):
+	if velocity.y > 0:
+		state_machine.travel("Falling")
+	
+	if (is_on_floor()):
+		state_machine.travel("Idle")
+		current_state = IDLE
+	
+func harakiri(delta:float):
+	state_machine.travel("Dead")
+	is_dead = true
+	current_state = DEAD
 
 func _on_Hurtbox_area_entered(area:Area2D):
 	if area.is_in_group("enemy_hitbox"):
@@ -83,6 +144,7 @@ func set_attack_monitoring():
 	$Hitbox.monitorable = false
 	$Hitbox.monitoring = false
 	print ("Attacking done")
+	is_attacking = false
 
 func blink():
 
@@ -104,4 +166,4 @@ func blink():
 
 func _on_Hitbox_area_entered(area:Area2D):
 	if (area.is_in_group("enemy_hurtbox")):
-		print ("Hurt")
+		Globals.debug ("Hurt")
