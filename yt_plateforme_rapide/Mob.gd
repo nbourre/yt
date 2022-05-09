@@ -27,6 +27,7 @@ var attack_acc = 0
 var attack_rate = .2
 
 var other_body
+var player_contact = false
 
 func _ready():
 	
@@ -59,6 +60,9 @@ func think(delta):
 func attack(delta):
 	attack_acc += delta
 
+	state_machine.travel("Attack")
+	return
+
 	var dist = abs(other_body.position.x - position.x)
 
 	if dist < CLOSE_ATTACK_DISTANCE:
@@ -86,15 +90,20 @@ func move_character(delta):
 func detect_direction_change():
 	if is_on_floor():
 		if $WallDetector.is_colliding() or not $FloorDetector.is_colliding():
-			direction *= -1
-			direction_flip = true
-			#debug("direction: " + str(direction))
-	
+			flip_direction()
+
+func flip_direction():
+	direction *= -1
+	direction_flip = true			
+
 func debug(msg):	
 	print("[" + str(OS.get_ticks_msec()) + "] : " + msg)
 
 func _on_PlayerDetector_body_entered(body:Node):
+	return
+
 	if body.get_name() == "Player":
+
 		other_body = body as KinematicBody2D
 
 		var dist = abs(other_body.position.x - position.x)
@@ -105,18 +114,28 @@ func _on_PlayerDetector_body_entered(body:Node):
 			current_state = IDLE
 		
 		debug(body.get_name())
-	pass # Replace with function body.
 
 
 func attack_done():
 	current_state = WALKING
 	state_machine.travel("Walk")
-	debug("attack done")
+	if (player_contact):
+		player_contact = false
+		flip_direction()
+
+	#debug("attack done")
 
 func _on_AnimationPlayer_animation_finished(anim_name:String):
 	debug ("animation finished: " + anim_name)
 	
+func _on_hitbox_front_body_entered(body:Node):
+	if body.get_name() == "Player":
+		other_body = body as KinematicBody2D
 
+		if (other_body.is_attacking):
+			print ("Enemy dead")
+			queue_free()
+			return
+		current_state = ATTACK
+		player_contact = true
 
-func _on_hitbox_front_area_entered(area:Area2D):
-	pass # Replace with function body.

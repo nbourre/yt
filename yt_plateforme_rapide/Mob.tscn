@@ -5,8 +5,8 @@
 
 [sub_resource type="Animation" id=65]
 resource_name = "Attack"
-length = 0.9
-step = 0.15
+length = 0.3
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -14,7 +14,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.15, 0.3, 0.45, 0.6, 0.75 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 16, 17, 18, 19, 20, 21 ]
@@ -26,7 +26,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.9 ),
+"times": PoolRealArray( 0.3 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -230,11 +230,11 @@ graph_offset = Vector2( 0, -59.5534 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
-[sub_resource type="RectangleShape2D" id=84]
-extents = Vector2( 41, 10 )
-
 [sub_resource type="RectangleShape2D" id=87]
-extents = Vector2( 2.5, 10 )
+extents = Vector2( 2.5, 7.5 )
+
+[sub_resource type="RectangleShape2D" id=88]
+extents = Vector2( 2, 7 )
 
 [node name="Mob" type="KinematicBody2D"]
 collision_layer = 2
@@ -280,18 +280,16 @@ enabled = true
 cast_to = Vector2( 0, 8 )
 collision_mask = 4
 
-[node name="PlayerDetector" type="Area2D" parent="."]
-visible = false
-collision_layer = 2
+[node name="Hitbox_front" type="Area2D" parent="." groups=["enemy_hitbox"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
-position = Vector2( 41, 6 )
-shape = SubResource( 84 )
-
-[node name="hitbox_front" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox_front"]
-position = Vector2( 11, 6 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox_front"]
+position = Vector2( 11, 8.5 )
 shape = SubResource( 87 )
 
-[connection signal="body_entered" from="PlayerDetector" to="." method="_on_PlayerDetector_body_entered"]
+[node name="Hurtbox_rear" type="Area2D" parent="." groups=["enemy_hurtbox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox_rear"]
+position = Vector2( -4, 9 )
+shape = SubResource( 88 )
+
+[connection signal="body_entered" from="Hitbox_front" to="." method="_on_hitbox_front_body_entered"]

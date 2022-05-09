@@ -9,19 +9,26 @@ onready var sprite = $Sprite
 var state_machine
 var is_dead = false
 var dir = 0
+var facing_right = 1
 var velocity = Vector2.ZERO
+
+var is_attacking = false
+
+export var knockback = 1000
+export var knockup = -750
+
 
 func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
 
 func _physics_process(_delta):
-	
 	if is_dead:
 		return
 
 	dir = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	if dir != 0:
 		sprite.scale.x = dir
+		facing_right = dir
 	
 	if is_on_floor():
 		if dir != 0:
@@ -35,10 +42,12 @@ func _physics_process(_delta):
 		
 		if Input.is_action_pressed("Attack_1"):
 			state_machine.travel("Attack_1")
+			set_attack_monitoring()
 			return
 		
 		if Input.is_action_pressed("Attack_2"):
 			state_machine.travel("Attack_2")
+			set_attack_monitoring()
 			return
 			
 		if Input.is_action_pressed("Attack_3"):
@@ -58,4 +67,41 @@ func _physics_process(_delta):
 	velocity.x = lerp(velocity.x, SPEED * dir, ACCEL)
 	velocity = move_and_slide(velocity, Vector2.UP);
 
+
+func _on_Hurtbox_area_entered(area:Area2D):
+	if area.is_in_group("enemy_hitbox"):
+		velocity.x = lerp (velocity.x, knockback * -facing_right, 0.5)
+		velocity.y = lerp (0, knockup, 0.6)
+		velocity = move_and_slide(velocity, Vector2.UP);
+		blink()
+
+func set_attack_monitoring():
+	print ("Attacking")
+	$Hitbox.monitorable = true
+	$Hitbox.monitoring = true
+	yield(get_tree().create_timer(0.5), "timeout")
+	$Hitbox.monitorable = false
+	$Hitbox.monitoring = false
+	print ("Attacking done")
+
+func blink():
+
+	$Hurtbox.set_deferred("monitoring", false)
+	$Hurtbox.set_deferred("monitorable", false)
 	
+	sprite.visible = false;
+	yield(get_tree().create_timer(0.05), "timeout")
+	sprite.visible = true;
+	yield(get_tree().create_timer(0.07), "timeout")
+	sprite.visible = false;
+	yield(get_tree().create_timer(0.1), "timeout")
+	sprite.visible = true;
+
+	$Hurtbox.set_deferred("monitoring", true)
+	$Hurtbox.set_deferred("monitorable", true)
+	
+
+
+func _on_Hitbox_area_entered(area:Area2D):
+	if (area.is_in_group("enemy_hurtbox")):
+		print ("Hurt")
