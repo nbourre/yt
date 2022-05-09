@@ -5,6 +5,7 @@ enum {WALKING, IDLE, ATTACK}
 const MAX_VELOCITY = 50
 const MAX_FALL_VELOCITY = 500
 const GRAVITY = 100
+const CLOSE_ATTACK_DISTANCE = 40
 
 var current_state = WALKING
 
@@ -21,6 +22,9 @@ var msg_rate = .50
 
 var think_acc = 0
 var think_rate = .50
+
+var attack_acc = 0
+var attack_rate = .2
 
 var other_body
 
@@ -53,14 +57,21 @@ func think(delta):
 		current_state = ATTACK
 
 func attack(delta):
-	state_machine.travel("Attack")
+	attack_acc += delta
+
+	var dist = abs(other_body.position.x - position.x)
+
+	if dist < CLOSE_ATTACK_DISTANCE:
+		state_machine.travel("Attack")
+	else:
+		state_machine.travel("Cast")
+
 
 func move_character(delta):
-
 	if direction_flip:
 		direction_flip = false
 		scale.x *= -1
-		debug("velocity: " + str(velocity))
+		#debug("velocity: " + str(velocity))
 
 	if (not is_on_floor()):
 		velocity.y += GRAVITY
@@ -68,36 +79,44 @@ func move_character(delta):
 			velocity.y = MAX_FALL_VELOCITY
 
 	velocity.x = MAX_VELOCITY * direction
-	if velocity.x > MAX_VELOCITY:
-		velocity.x = MAX_VELOCITY
-	elif velocity.x < -MAX_VELOCITY:
-		velocity.x = -MAX_VELOCITY
 
 	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 func detect_direction_change():
-    if is_on_floor():
-        if $WallDetector.is_colliding() or not $FloorDetector.is_colliding():
-            direction *= -1
-            direction_flip = true
-            debug("direction: " + str(direction))
-    
-func debug(msg):
+	if is_on_floor():
+		if $WallDetector.is_colliding() or not $FloorDetector.is_colliding():
+			direction *= -1
+			direction_flip = true
+			#debug("direction: " + str(direction))
+	
+func debug(msg):	
 	print("[" + str(OS.get_ticks_msec()) + "] : " + msg)
 
 func _on_PlayerDetector_body_entered(body:Node):
 	if body.get_name() == "Player":
-		current_state = IDLE
 		other_body = body as KinematicBody2D
+
+		var dist = abs(other_body.position.x - position.x)
+		
+		if dist < CLOSE_ATTACK_DISTANCE:
+			current_state = ATTACK
+		else:
+			current_state = IDLE
+		
 		debug(body.get_name())
 	pass # Replace with function body.
 
 
 func attack_done():
 	current_state = WALKING
+	state_machine.travel("Walk")
 	debug("attack done")
 
 func _on_AnimationPlayer_animation_finished(anim_name:String):
 	debug ("animation finished: " + anim_name)
+	
+
+
+func _on_hitbox_front_area_entered(area:Area2D):
 	pass # Replace with function body.
