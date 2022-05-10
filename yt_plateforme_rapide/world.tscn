@@ -123,4 +123,4 @@ tile_data = PoolIntArray( 131072, 0, 0, 131073, 0, 4, 131102, 0, 0, 131103, 0, 4
 position = Vector2( 335, 117 )
 
 [node name="Mob" parent="." instance=ExtResource( 2 )]
-position = Vector2( 441, 86 )
+position = Vector2( 420, 101 )

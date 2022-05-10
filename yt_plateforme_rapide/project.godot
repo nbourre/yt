@@ -75,6 +75,10 @@ Suicide={
  ]
 }
 
+[layer_names]
+
+2d_render/layer_1="level"
+
 [physics]
 
 common/enable_pause_aware_picking=true

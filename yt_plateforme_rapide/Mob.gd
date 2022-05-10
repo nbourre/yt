@@ -23,14 +23,15 @@ func _physics_process(delta):
 		DEATH:
 			death(delta)
 			return
-	
-	velocity.y += GRAVITY if velocity.y < MAX_FALL_VELOCITY else MAX_FALL_VELOCITY
-
-	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 func walking(delta):
-	pass
+	
+	velocity.y += GRAVITY if velocity.y < MAX_FALL_VELOCITY else MAX_FALL_VELOCITY
+
+	velocity.x = MAX_VELOCITY
+
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 func attacking(delta):
 	pass
