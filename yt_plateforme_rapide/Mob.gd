@@ -9,22 +9,14 @@ const CLOSE_ATTACK_DISTANCE = 40
 
 var current_state = WALKING
 
-var acceleration = .5
-
 var velocity = Vector2(0, 0)
 var direction = 1
 var direction_flip = false
 
 var state_machine
 
-var msg_acc = 0
-var msg_rate = .50
-
 var think_acc = 0
 var think_rate = .50
-
-var attack_acc = 0
-var attack_rate = .2
 
 var other_body
 var player_contact = false
@@ -37,8 +29,6 @@ func _ready():
 	
 	
 func _physics_process(delta):
-	msg_acc += delta
-
 	match (current_state):
 		WALKING:
 			move_character(delta)
@@ -58,7 +48,6 @@ func think(delta):
 		current_state = ATTACK
 
 func attack(delta):
-	attack_acc += delta
 
 	state_machine.travel("Attack")
 	return
