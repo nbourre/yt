@@ -13,8 +13,12 @@ var velocity = Vector2.ZERO
 var direction = 1
 var direction_flip = false
 
+var state_machine
+
 func _ready():
-	pass
+	state_machine = $AnimationTree.get("parameters/playback")
+	walking_enter()
+
 
 func _physics_process(delta):
 
@@ -27,6 +31,10 @@ func _physics_process(delta):
 			death(delta)
 			return
 
+func walking_enter():
+	state_machine.travel("Walk")
+	current_state = WALKING
+	
 
 func walking(delta):
 	detect_direction_change()
