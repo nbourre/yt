@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Area2D",
+"class": "PlayerDetectionArea",
+"language": "GDScript",
+"path": "res://PlayerDetectionArea.gd"
+} ]
+_global_script_class_icons={
+"PlayerDetectionArea": ""
+}
+
 [application]
 
 config/name="yt_plateforme_rapide"
