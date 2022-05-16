@@ -84,6 +84,11 @@ func _on_PlayerDetector_body_exited(body:KinematicBody2D):
 	if body.name == "Player":
 		is_player_near = false
 		player = null
+		# flip_direction()
+		# walking_enter()
+		print("Player exited")
+
+func attack_done():
+	if not is_player_near:
 		flip_direction()
 		walking_enter()
-		print("Player exited")
