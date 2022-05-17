@@ -1,7 +1,7 @@
 [gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://viking2.png" type="Texture" id=2]
+[ext_resource path="res://assets/viking2.png" type="Texture" id=2]
 
 [sub_resource type="Animation" id=31]
 resource_name = "Attack_1"
@@ -243,6 +243,8 @@ graph_offset = Vector2( 0, -29.9254 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
 [node name="Player" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
