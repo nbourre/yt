@@ -1,7 +1,7 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://viking2.png" type="Texture" id=2]
+[ext_resource path="res://assets/viking2.png" type="Texture" id=2]
 
 [sub_resource type="Animation" id=31]
 resource_name = "Attack_1"
@@ -149,7 +149,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=30]
-extents = Vector2( 8.75, 8 )
+extents = Vector2( 8.375, 8 )
 
 [sub_resource type="AnimationNodeAnimation" id=40]
 animation = "Attack_1"
@@ -242,11 +242,13 @@ graph_offset = Vector2( 0, -29.9254 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=64]
 
+[sub_resource type="RectangleShape2D" id=65]
+extents = Vector2( 9.5, 6.5 )
+
 [node name="Player" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
@@ -266,7 +268,7 @@ anims/Run = SubResource( 39 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 2, 8 )
+position = Vector2( 1.625, 8 )
 shape = SubResource( 30 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -278,3 +280,13 @@ tree_root = SubResource( 63 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 64 )
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2( 1.5, 8 )
+shape = SubResource( 65 )
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
