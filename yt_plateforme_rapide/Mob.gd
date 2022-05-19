@@ -53,7 +53,13 @@ func attack_enter():
 	current_state = ATTACKING
 
 func attack(delta):
-	pass
+	if (is_player_nearby):
+		state_machine.travel("Attack")
+
+func attack_done():
+	if (not is_player_nearby):
+		flip_direction()
+		walk_enter()
 
 func death(delta):
 	pass
@@ -67,13 +73,12 @@ func flip_direction():
 	direction *= -1
 	direction_flip = true
 
-
-
 func _on_PlayerDetector_body_exited(body:Node):
 	if (body.name == "Player"):
 		is_player_nearby = false
 		player = null
-		walk_enter()
+		#flip_direction()
+		#walk_enter()
 
 func _on_PlayerDetector_body_entered(body:Node):
 	if (body.name == "Player"):
