@@ -82,6 +82,11 @@ func _on_PlayerDetector_body_exited(body:Node):
 
 func _on_PlayerDetector_body_entered(body:Node):
 	if (body.name == "Player"):
-		is_player_nearby = true
-		player = body as KinematicBody2D
-		attack_enter()
+		player = body as Player
+
+		if (player.is_alive()) :
+			is_player_nearby = true			
+			attack_enter()
+		else:
+			is_player_nearby = false
+			flip_direction()

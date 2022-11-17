@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name Player
 
 const GRAVITY = 35
 const JUMP_FORCE = 550
@@ -15,6 +16,8 @@ var velocity = Vector2.ZERO
 
 var knockback = 1000
 var knockup = -750
+
+var hp = 100
 
 func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
@@ -52,8 +55,11 @@ func _physics_process(_delta):
 			return
 
 		if Input.is_action_just_pressed("Suicide"):
-			state_machine.travel("Dead")
-			is_dead = true
+			death_enter()
+			return
+		
+		if (hp <= 10):
+			death_enter()
 			return
 	else:
 		if velocity.y > 0:
@@ -70,6 +76,8 @@ func _on_Hurtbox_area_entered(area:Area2D):
 		velocity.y = lerp(0, knockup, 0.6)
 		velocity = move_and_slide(velocity, Vector2.UP);
 		blink()
+		hp -= 10
+		print("hp : " + str(hp))
 
 func blink():
 	$Hurtbox.set_deferred("monitoring", false)
@@ -85,3 +93,13 @@ func blink():
 
 	$Hurtbox.set_deferred("monitoring", true)
 	$Hurtbox.set_deferred("monitorable", true)
+
+func death_enter():
+	$Hurtbox.set_deferred("monitoring", false)
+	$Hurtbox.set_deferred("monitorable", false)	
+	state_machine.travel("Dead")
+	is_dead = true
+
+
+func is_alive():
+	return !is_dead
