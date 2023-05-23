@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyhdmbpy087yi"]
+
+[ext_resource type="Script" path="res://bullet.gd" id="1_mt7vk"]
+
+[node name="Bullet" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_mt7vk")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-3, -2, 3, -2, 4, 0, 3, 2, -3, 2)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-3, -2, 3, -2, 4, 0, 3, 2, -3, 2)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-4, -3, 4, -3, 5, 0, 4, 3, -4, 3)
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

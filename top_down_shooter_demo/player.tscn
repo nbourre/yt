@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg8n3f1008ojn"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_sra10"]
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_sra10")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-19, -21, 13, -19, 28, -2, 10, 16, -17, 12)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-19, -21, 13, -19, 28, -2, 10, 16, -17, 11)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-20, -22, 14, -20, 29, -2, 10, 17, -18, 13)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

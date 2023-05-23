@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccsdo05u7ebw7"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_ifoyl"]
+
+[node name="Enemy" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_ifoyl")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-15, -7, 6, -19, 19, 3, 5, 18, -18, 8)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(0, 4)
+color = Color(1, 0.243137, 0.270588, 1)
+polygon = PackedVector2Array(-15, -11, 6, -23, 19, -1, 5, 14, -18, 4)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-16, -8, 6, -20, 20, 3, 5, 19, -19, 9)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
