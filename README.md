@@ -17,3 +17,10 @@ Projets en lien avec mes vidéos Youtube.
 
 # Top down shooter
 - Le dossier `top_down_shooter_demo` est le projet de la vidéo ["Godot - Top down shooter [Français]"](https://youtu.be/GRwa6lukI1Q)
+
+## Wishlist
+- [ ] Ajouter de l'éclairage sur le joueur
+- [ ] Faire des ennemis variés (Plus fort, plus rapide, plus résistant, etc...)
+- [ ] Faire des ennemis intelligents
+  - [ ] Qui s'active à une certaine distance
+  - [ ] Qui trouve le chemin le plus court pour atteindre le joueur
