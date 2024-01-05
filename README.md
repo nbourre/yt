@@ -1,6 +1,16 @@
 # Description
 Projets en lien avec mes vidéos Youtube.
 
+# Génération de terrain procédural
+![Alt text](assets/proc_gen_demo.gif)
+
+- Le dossier `procedural_generation_terrain` est le projet pour la génération de terrain procédural
+
+## Wishlist
+- [ ] Ajouter des textures
+- [ ] Ajouter des paramètres pour avoir des données tel que tuile marchable, tuile non marchable, etc...
+- [ ] Configurer les différents paramètres pour avoir des terrains variés
+
 # Plateforme "rapide"
 
 - Le dossier `yt_plateforme_rapide` est le projet sur le jeu de plateforme
